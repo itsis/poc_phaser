@@ -1,37 +1,137 @@
 /// <reference path="../tsDefinitions/phaser.d.ts" />
-var SimpleGame = (function () {
-    function SimpleGame() {
-        // create our phaser game
-        // 800 - width
-        // 600 - height
-        // Phaser.AUTO - determine the renderer automatically (canvas, webgl)
-        // 'content' - the name of the container to add our game to
-        // { preload:this.preload, create:this.create} - functions to call for our states
-        this.game = new Phaser.Game(800, 600, Phaser.AUTO, 'content', { preload: this.preload, create: this.create });
-    }
-    SimpleGame.prototype.preload = function () {
-        // add our logo image to the assets class under the
-        // key 'logo'. We're also setting the background colour
-        // so it's the same as the background colour in the image
-        this.game.load.image('logo', "assets/architecte.jpg");
-        this.game.stage.backgroundColor = 0xB20059;
-    };
-    SimpleGame.prototype.create = function () {
-        // add the 'logo' sprite to the game, position it in the
-        // center of the screen, and set the anchor to the center of
-        // the image so it's centered properly. There's a lot of
-        // centering in that last sentence
-        var logo = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'logo');
-        logo.anchor.setTo(0.5, 0.5);
-        logo.scale.setTo(0.2, 0.2);
-        this.game.add.tween(logo.scale).to({ x: 1, y: 1 }, 2000, Phaser.Easing.Bounce.Out, true);
-    };
-    SimpleGame.prototype.update = function () {
-        console.log("test");
-    };
-    return SimpleGame;
-})();
-// when the page has finished loading, create our game
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+var itsis;
+(function (itsis) {
+    var Preloader = (function (_super) {
+        __extends(Preloader, _super);
+        function Preloader() {
+            _super.apply(this, arguments);
+        }
+        Preloader.prototype.Preload = function () {
+            this.preloadBar = this.add.sprite(200, 250, 'preloadBar');
+            this.load.setPreloadSprite(this.preloadBar);
+            //  Load our actual games assets
+            // this.load.image('titlepage', 'assets/titlepage.jpg');
+            this.load.image('logo', 'assets/architecte.png');
+            // this.load.audio('music', 'assets/title.mp3', true);
+            // this.load.spritesheet('simon', 'assets/simon.png', 58, 96, 5);
+            // this.load.image('level1', 'assets/level1.png');
+        };
+        Preloader.prototype.create = function () {
+            var tween = this.add.tween(this.preloadBar).to({ alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
+            tween.onComplete.add(this.startMainMenu, this);
+        };
+        Preloader.prototype.startMainMenu = function () {
+            this.game.state.start('MainMenu', true, false);
+        };
+        return Preloader;
+    })(Phaser.State);
+    itsis.Preloader = Preloader;
+})(itsis || (itsis = {}));
+/// <reference path="../tsDefinitions/phaser.d.ts" />
+/// <reference path="./Preloader.ts" />
+var itsis;
+(function (itsis) {
+    var Boot = (function (_super) {
+        __extends(Boot, _super);
+        function Boot() {
+            _super.apply(this, arguments);
+        }
+        Boot.prototype.preload = function () {
+            try {
+                this.load.image('preloadBar', 'assets/loader.png');
+            }
+            catch (e) {
+                console.log(e);
+            }
+            console.log("test");
+        };
+        Boot.prototype.create = function () {
+            console.log("test create");
+            //  Unless you specifically need to support multitouch I would recommend setting this to 1
+            this.input.maxPointers = 1;
+            //  Phaser will automatically pause if the browser tab the game is in loses focus. You can disable that here:
+            this.stage.disableVisibilityChange = true;
+            if (this.game.device.desktop) {
+            }
+            else {
+            }
+            console.log("reee");
+            this.game.state.start('Preloader', true, false);
+        };
+        return Boot;
+    })(Phaser.State);
+    itsis.Boot = Boot;
+})(itsis || (itsis = {}));
+/// <reference path="../tsDefinitions/phaser.d.ts" />
+var itsis;
+(function (itsis) {
+    var InGame = (function (_super) {
+        __extends(InGame, _super);
+        function InGame() {
+            _super.apply(this, arguments);
+        }
+        return InGame;
+    })(Phaser.Game);
+    itsis.InGame = InGame;
+})(itsis || (itsis = {}));
+/// <reference path="../tsDefinitions/phaser.d.ts" />
+var itsis;
+(function (itsis) {
+    var MainMenu = (function (_super) {
+        __extends(MainMenu, _super);
+        function MainMenu() {
+            _super.apply(this, arguments);
+        }
+        MainMenu.prototype.create = function () {
+            this.background = this.add.sprite(0, 0, 'titlepage');
+            this.background.alpha = 0;
+            this.logo = this.add.sprite(this.world.centerX, -300, 'logo');
+            this.logo.anchor.setTo(0.5, 0.5);
+            this.add.tween(this.background).to({ alpha: 1 }, 2000, Phaser.Easing.Bounce.InOut, true);
+            this.add.tween(this.logo).to({ y: 220 }, 2000, Phaser.Easing.Elastic.Out, true, 2000);
+            this.input.onDown.addOnce(this.fadeOut, this);
+        };
+        MainMenu.prototype.fadeOut = function () {
+            this.add.tween(this.background).to({ alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
+            var tween = this.add.tween(this.logo).to({ y: 800 }, 2000, Phaser.Easing.Linear.None, true);
+            tween.onComplete.add(this.startGame, this);
+        };
+        MainMenu.prototype.startGame = function () {
+            // this.game.state.start('Level1', true, false);
+        };
+        return MainMenu;
+    })(Phaser.State);
+    itsis.MainMenu = MainMenu;
+})(itsis || (itsis = {}));
+/// <reference path="../tsDefinitions/phaser.d.ts" />
+/// <reference path="./Preloader.ts" />
+/// <reference path="./Boot.ts" />
+/// <reference path="./MainMenu.ts" />
+/// <reference path="./InGame.ts" />
+var itsis;
+(function (itsis) {
+    var ItsisGame = (function (_super) {
+        __extends(ItsisGame, _super);
+        function ItsisGame() {
+            _super.call(this, 400, 400, Phaser.AUTO, 'content', null);
+            this.state.add('Boot', itsis.Boot, false);
+            this.state.add('Preloader', itsis.Preloader, false);
+            this.state.add('MainMenu', itsis.MainMenu, false);
+            this.state.add('InGame', itsis.InGame, false);
+            this.state.start('Boot');
+        }
+        return ItsisGame;
+    })(Phaser.Game);
+    itsis.ItsisGame = ItsisGame;
+})(itsis || (itsis = {}));
+/// <reference path="../tsDefinitions/phaser.d.ts" />
+/// <reference path='./ItsisGame.ts' />
 window.onload = function () {
-    var game = new SimpleGame();
+    var game = new itsis.ItsisGame();
 };
