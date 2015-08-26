@@ -19,7 +19,6 @@ var Itsis;
             this.input.maxPointers = 1;
             //  Phaser will automatically pause if the browser tab the game is in loses focus. You can disable that here:
             this.stage.disableVisibilityChange = true;
-            this.game.physics.startSystem(Phaser.Physics.P2JS);
             if (this.game.device.desktop) {
                 //  If you have any desktop specific settings, they can go in here
                 this.game.scale.pageAlignHorizontally = true;
@@ -102,7 +101,6 @@ var Itsis;
             this.anchor.setTo(0.5, 0);
             this.animations.add('walk', [0, 1, 2, 3, 4], 10, true);
             game.add.existing(this);
-            game.physics.enable(this);
         }
         Player.prototype.update = function () {
             this.body.velocity.x = 0;
