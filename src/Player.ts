@@ -12,6 +12,8 @@ module Itsis {
             
             game.add.existing(this);
             
+            this.game.physics.enable(this, Phaser.Physics.ARCADE);
+            
         }
 
         update() {

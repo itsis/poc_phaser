@@ -25,6 +25,8 @@ var Itsis;
             }
             else {
             }
+            this.game.physics.startSystem(Phaser.Physics.ARCADE);
+            this.game.physics.setBoundsToWorld();
             this.game.state.start('Preloader', true, false);
         };
         return Boot;
@@ -101,6 +103,7 @@ var Itsis;
             this.anchor.setTo(0.5, 0);
             this.animations.add('walk', [0, 1, 2, 3, 4], 10, true);
             game.add.existing(this);
+            this.game.physics.enable(this, Phaser.Physics.ARCADE);
         }
         Player.prototype.update = function () {
             this.body.velocity.x = 0;
