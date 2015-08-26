@@ -12,7 +12,6 @@ module Itsis {
             
             game.add.existing(this);
             
-            game.physics.enable(this);
         }
 
         update() {

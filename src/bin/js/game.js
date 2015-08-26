@@ -102,7 +102,6 @@ var Itsis;
             this.anchor.setTo(0.5, 0);
             this.animations.add('walk', [0, 1, 2, 3, 4], 10, true);
             game.add.existing(this);
-            game.physics.enable(this);
         }
         Player.prototype.update = function () {
             this.body.velocity.x = 0;
