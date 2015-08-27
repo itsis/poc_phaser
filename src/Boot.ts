@@ -4,7 +4,7 @@ module Itsis {
 
         preload() {
 
-            this.load.image('preloadBar', 'assets/loader.png');
+            this.load.image('preloadBar', 'assets/images/loader.png');
 
         }
 

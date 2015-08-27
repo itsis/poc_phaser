@@ -12,7 +12,7 @@ var Itsis;
             _super.apply(this, arguments);
         }
         Boot.prototype.preload = function () {
-            this.load.image('preloadBar', 'assets/loader.png');
+            this.load.image('preloadBar', 'assets/images/loader.png');
         };
         Boot.prototype.create = function () {
             //  Unless you specifically need to support multitouch I would recommend setting this to 1
@@ -26,7 +26,6 @@ var Itsis;
             else {
             }
             this.game.physics.startSystem(Phaser.Physics.ARCADE);
-            this.game.physics.setBoundsToWorld();
             this.game.state.start('Preloader', true, false);
         };
         return Boot;
@@ -58,8 +57,8 @@ var Itsis;
         }
         Level1.prototype.create = function () {
             this.background = this.add.sprite(0, 0, 'level1');
-            this.music = this.add.audio('music', 1, false);
-            this.music.play();
+            //this.music = this.add.audio('music', 1, false);
+            //this.music.play();
             this.player = new Itsis.Player(this.game, 130, 284);
         };
         return Level1;
@@ -99,24 +98,44 @@ var Itsis;
     var Player = (function (_super) {
         __extends(Player, _super);
         function Player(game, x, y) {
-            _super.call(this, game, x, y, 'simon', 0);
+            _super.call(this, game, x, y, 'main_character', 0);
             this.anchor.setTo(0.5, 0);
-            this.animations.add('walk', [0, 1, 2, 3, 4], 10, true);
+            this.animations.add('walkVertical', [6, 7, 6, 7], 30, true);
+            this.animations.add('walkHorizontal', [3, 2, 1, 0], 30, true);
             game.add.existing(this);
             this.game.physics.enable(this, Phaser.Physics.ARCADE);
         }
         Player.prototype.update = function () {
             this.body.velocity.x = 0;
-            if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
-                this.body.velocity.x = -150;
-                this.animations.play('walk');
+            this.body.velocity.y = 0;
+            if (this.game.input.keyboard.isDown(Phaser.Keyboard.UP)) {
+                this.body.velocity.x = -250;
+                this.body.velocity.y = -130;
+                this.animations.play('walkVertical');
+                if (this.scale.x == 1) {
+                    this.scale.x = -1;
+                }
+            }
+            else if (this.game.input.keyboard.isDown(Phaser.Keyboard.DOWN)) {
+                this.body.velocity.x = +250;
+                this.body.velocity.y = +130;
+                this.animations.play('walkVertical');
+                if (this.scale.x == -1) {
+                    this.scale.x = 1;
+                }
+            }
+            else if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
+                this.body.velocity.x = -250;
+                this.body.velocity.y = +130;
+                this.animations.play('walkHorizontal');
                 if (this.scale.x == 1) {
                     this.scale.x = -1;
                 }
             }
             else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
-                this.body.velocity.x = 150;
-                this.animations.play('walk');
+                this.body.velocity.x = +250;
+                this.body.velocity.y = -130;
+                this.animations.play('walkHorizontal');
                 if (this.scale.x == -1) {
                     this.scale.x = 1;
                 }
@@ -141,11 +160,11 @@ var Itsis;
             this.preloadBar = this.add.sprite(200, 250, 'preloadBar');
             this.load.setPreloadSprite(this.preloadBar);
             //  Load our actual games assets
-            this.load.image('titlepage', 'assets/titlepage.jpg');
-            this.load.image('logo', 'assets/logo.png');
-            this.load.audio('music', 'assets/title.mp3', true);
-            this.load.spritesheet('simon', 'assets/simon.png', 58, 96, 5);
-            this.load.image('level1', 'assets/level1.png');
+            this.load.image('titlepage', 'assets/images/splashscreen.jpg');
+            this.load.image('logo', 'assets/images/logo.png');
+            //this.load.audio('music', 'assets/title.mp3', true);
+            this.load.spritesheet('main_character', 'assets/characters/main_character.png', 64, 64, 16);
+            this.load.image('level1', 'assets/scenery/room_empty.png');
         };
         Preloader.prototype.create = function () {
             var tween = this.add.tween(this.preloadBar).to({ alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);

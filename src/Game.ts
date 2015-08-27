@@ -10,7 +10,6 @@ module Itsis {
             this.state.add('Preloader', Preloader, false);
             this.state.add('MainMenu', MainMenu, false);
             this.state.add('Level1', Level1, false);
-
             this.state.start('Boot');
 
         }
