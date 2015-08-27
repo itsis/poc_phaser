@@ -7,52 +7,15 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var itsis;
 (function (itsis) {
-    var Preloader = (function (_super) {
-        __extends(Preloader, _super);
-        function Preloader() {
-            _super.apply(this, arguments);
-        }
-        Preloader.prototype.Preload = function () {
-            this.preloadBar = this.add.sprite(200, 250, 'preloadBar');
-            this.load.setPreloadSprite(this.preloadBar);
-            //  Load our actual games assets
-            // this.load.image('titlepage', 'assets/titlepage.jpg');
-            this.load.image('logo', 'assets/architecte.png');
-            // this.load.audio('music', 'assets/title.mp3', true);
-            // this.load.spritesheet('simon', 'assets/simon.png', 58, 96, 5);
-            // this.load.image('level1', 'assets/level1.png');
-        };
-        Preloader.prototype.create = function () {
-            var tween = this.add.tween(this.preloadBar).to({ alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
-            tween.onComplete.add(this.startMainMenu, this);
-        };
-        Preloader.prototype.startMainMenu = function () {
-            this.game.state.start('MainMenu', true, false);
-        };
-        return Preloader;
-    })(Phaser.State);
-    itsis.Preloader = Preloader;
-})(itsis || (itsis = {}));
-/// <reference path="../tsDefinitions/phaser.d.ts" />
-/// <reference path="./Preloader.ts" />
-var itsis;
-(function (itsis) {
     var Boot = (function (_super) {
         __extends(Boot, _super);
         function Boot() {
             _super.apply(this, arguments);
         }
         Boot.prototype.preload = function () {
-            try {
-                this.load.image('preloadBar', 'assets/loader.png');
-            }
-            catch (e) {
-                console.log(e);
-            }
-            console.log("test");
+            this.load.image('preloadBar', 'assets/loader.png');
         };
         Boot.prototype.create = function () {
-            console.log("test create");
             //  Unless you specifically need to support multitouch I would recommend setting this to 1
             this.input.maxPointers = 1;
             //  Phaser will automatically pause if the browser tab the game is in loses focus. You can disable that here:
@@ -61,24 +24,11 @@ var itsis;
             }
             else {
             }
-            console.log("reee");
             this.game.state.start('Preloader', true, false);
         };
         return Boot;
     })(Phaser.State);
     itsis.Boot = Boot;
-})(itsis || (itsis = {}));
-/// <reference path="../tsDefinitions/phaser.d.ts" />
-var itsis;
-(function (itsis) {
-    var InGame = (function (_super) {
-        __extends(InGame, _super);
-        function InGame() {
-            _super.apply(this, arguments);
-        }
-        return InGame;
-    })(Phaser.Game);
-    itsis.InGame = InGame;
 })(itsis || (itsis = {}));
 /// <reference path="../tsDefinitions/phaser.d.ts" />
 var itsis;
@@ -110,25 +60,51 @@ var itsis;
     itsis.MainMenu = MainMenu;
 })(itsis || (itsis = {}));
 /// <reference path="../tsDefinitions/phaser.d.ts" />
-/// <reference path="./Preloader.ts" />
 /// <reference path="./Boot.ts" />
 /// <reference path="./MainMenu.ts" />
-/// <reference path="./InGame.ts" />
 var itsis;
 (function (itsis) {
     var ItsisGame = (function (_super) {
         __extends(ItsisGame, _super);
         function ItsisGame() {
-            _super.call(this, 400, 400, Phaser.AUTO, 'content', null);
+            _super.call(this, 800, 600, Phaser.AUTO, 'content', null);
             this.state.add('Boot', itsis.Boot, false);
             this.state.add('Preloader', itsis.Preloader, false);
             this.state.add('MainMenu', itsis.MainMenu, false);
-            this.state.add('InGame', itsis.InGame, false);
             this.state.start('Boot');
         }
         return ItsisGame;
     })(Phaser.Game);
     itsis.ItsisGame = ItsisGame;
+})(itsis || (itsis = {}));
+var itsis;
+(function (itsis) {
+    var Preloader = (function (_super) {
+        __extends(Preloader, _super);
+        function Preloader() {
+            _super.apply(this, arguments);
+        }
+        Preloader.prototype.preload = function () {
+            //  Set-up our preloader sprite
+            this.preloadBar = this.add.sprite(200, 250, 'preloadBar');
+            this.load.setPreloadSprite(this.preloadBar);
+            //  Load our actual games assets
+            this.load.image('titlepage', 'assets/titlepage.jpg');
+            this.load.image('logo', 'assets/logo.png');
+            this.load.audio('music', 'assets/title.mp3', true);
+            this.load.spritesheet('simon', 'assets/simon.png', 58, 96, 5);
+            this.load.image('level1', 'assets/level1.png');
+        };
+        Preloader.prototype.create = function () {
+            var tween = this.add.tween(this.preloadBar).to({ alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
+            tween.onComplete.add(this.startMainMenu, this);
+        };
+        Preloader.prototype.startMainMenu = function () {
+            this.game.state.start('MainMenu', true, false);
+        };
+        return Preloader;
+    })(Phaser.State);
+    itsis.Preloader = Preloader;
 })(itsis || (itsis = {}));
 /// <reference path="../tsDefinitions/phaser.d.ts" />
 /// <reference path='./ItsisGame.ts' />
