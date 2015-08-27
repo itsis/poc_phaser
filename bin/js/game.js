@@ -112,28 +112,28 @@ var Itsis;
                 this.body.velocity.x = -250;
                 this.body.velocity.y = -130;
                 this.animations.play('walkVertical');
-                if (this.scale.x == 1) {
-                    this.scale.x = -1;
-                }
-            }
-            else if (this.game.input.keyboard.isDown(Phaser.Keyboard.DOWN)) {
-                this.body.velocity.x = +250;
-                this.body.velocity.y = +130;
-                this.animations.play('walkVertical');
                 if (this.scale.x == -1) {
                     this.scale.x = 1;
                 }
             }
+            else if (this.game.input.keyboard.isDown(Phaser.Keyboard.DOWN)) {
+                this.body.velocity.x = 250;
+                this.body.velocity.y = 130;
+                this.animations.play('walkVertical');
+                if (this.scale.x == 1) {
+                    this.scale.x = -1;
+                }
+            }
             else if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
                 this.body.velocity.x = -250;
-                this.body.velocity.y = +130;
+                this.body.velocity.y = 130;
                 this.animations.play('walkHorizontal');
                 if (this.scale.x == 1) {
                     this.scale.x = -1;
                 }
             }
             else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
-                this.body.velocity.x = +250;
+                this.body.velocity.x = 250;
                 this.body.velocity.y = -130;
                 this.animations.play('walkHorizontal');
                 if (this.scale.x == -1) {
